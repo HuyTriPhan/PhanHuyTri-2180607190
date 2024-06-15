@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title th:text="${title} ?: 'Danh Sách Nhân Viên'">2180607190-PhanHuyTri</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="/nhanviens">2180607190-PhanHuyTri</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link text-white active" aria-current="page"
+                       href="/nhanviens">NhanVien</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
+                    <a th:href="@{/nhanviens/add}" class="nav-link text-white">Them nhan vien</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
+                    <a th:href="@{/phongban/add}" class="nav-link text-white">Them phong ban</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                <li class="nav-item d-flex align-items-center"
+                    sec:authorize="isAuthenticated()">
+<span class="navbar-text text-white">
+Xin chào, <span sec:authentication="name" style="marginright: 20px;"></span>
+</span>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button class="btn btn-outline-light"
+                                type="submit">Logout</button>
+                    </form>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-outline-light" href="/login">Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container mt-5">
+    <section layout:fragment="content">
+        <h1 class="mb-4">Update Phong Ban</h1>
+        <form th:action="@{/phongbans/update/{id}(id=${phongBan.id})}" th:object="${phongBan}" method="post" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="id" class="form-label">Ma Phong:</label>
+                <input type="text" th:field="*{maPhong}" class="form-control" id="id" required>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{maPhong}">Valid Mã Phòng is required.</div>
+            </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Ten Phong:</label>
+                <input type="text" th:field="*{tenPhong}" class="form-control" id="name" required>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{tenPhong}">Valid Tên Phòng is required.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a th:href="@{/templates/phongbans}" class="btn btn-link">Cancel</a>
+        </form>
+    </section>
+</div>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>
+
+<body>
+
